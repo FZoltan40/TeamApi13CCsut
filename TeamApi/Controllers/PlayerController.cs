@@ -30,5 +30,29 @@ namespace TeamApi.Controllers
             }
             return BadRequest(new { message = "Hiba az objektum képzés során." });
         }
+
+        [HttpGet]
+        public ActionResult Get()
+        {
+            using (var context = new TeamContext())
+            {
+                return Ok(context.Players.ToList());
+            }
+        }
+
+        [HttpGet("ById")]
+        public ActionResult<Player> GetById(Guid id)
+        {
+            using (var context = new TeamContext())
+            {
+                var player = context.Players.FirstOrDefault(player => player.Id == id);
+
+                if (player != null)
+                {
+                    return Ok(player);
+                }
+                return NotFound(new { message = "Nincs ilyen játékos." });
+            }
+        }
     }
 }
