@@ -78,5 +78,24 @@ namespace TeamApi.Controllers
 
             }
         }
+
+        [HttpDelete]
+        public ActionResult Delete(Guid id)
+        {
+            using (var context = new TeamContext())
+            {
+                var player = context.Players.FirstOrDefault(player => player.Id == id);
+
+                if (player != null)
+                {
+                    context.Players.Remove(player);
+                    context.SaveChanges();
+
+                    return Ok(new { message = "Játékos törölve." });
+                }
+
+                return NotFound(new { message = "Nincs ilyen játékos." });
+            }
+        }
     }
 }
